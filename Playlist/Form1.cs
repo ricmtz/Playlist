@@ -8,7 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using ScrapySharp.Network;
+using System.Net;
+using HtmlAgilityPack;
+using System.Net.Http;
+using OpenQA.Selenium.Chrome;
+
 
 namespace Playlist
 {
@@ -20,14 +24,14 @@ namespace Playlist
             ctrlSong = new CtrlSong();
             InitializeComponent();
             LoadDefaultSongs();
-            Scraper();
+            ScrapeerAsync();
         }
 
-        private void Scraper() {
-            ScrapingBrowser browser = new ScrapingBrowser();
-            WebPage homePage = browser.NavigateToPage(new Uri("https://www.youtube.com/results?search_query=transistor+ost"));
-            var divs = homePage.Html.SelectNodes("//*[@id=\"contents\"]/ytd-video-renderer");
-            Console.WriteLine(divs);
+
+        private async void ScrapeerAsync()
+        {
+            Scraper scrapeer = new Scraper();
+            await scrapeer.StartAsync();
         }
 
         private void LoadDefaultSongs() {
@@ -114,5 +118,6 @@ namespace Playlist
         {
             ctrlSong.PauseSong();
         }
+
     }
 }
