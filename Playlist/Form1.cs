@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using ScrapySharp.Network;
 
 namespace Playlist
 {
@@ -19,6 +20,14 @@ namespace Playlist
             ctrlSong = new CtrlSong();
             InitializeComponent();
             LoadDefaultSongs();
+            Scraper();
+        }
+
+        private void Scraper() {
+            ScrapingBrowser browser = new ScrapingBrowser();
+            WebPage homePage = browser.NavigateToPage(new Uri("https://www.youtube.com/results?search_query=transistor+ost"));
+            var divs = homePage.Html.SelectNodes("//*[@id=\"contents\"]/ytd-video-renderer");
+            Console.WriteLine(divs);
         }
 
         private void LoadDefaultSongs() {
@@ -51,7 +60,7 @@ namespace Playlist
                     SetMetada(ctrlSong.InfoCurrSong());
                 } else {
                     string message = "This folder do not cotaints mp3 files";
-                    string caption = "No sons found";
+                    string caption = "No songs found";
 
                     MessageBoxButtons buttons = MessageBoxButtons.OK;
                     DialogResult alert;

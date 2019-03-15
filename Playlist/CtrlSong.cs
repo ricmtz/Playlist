@@ -89,7 +89,7 @@ namespace Playlist
             Song aux;
             songName = song.Tag.Title ?? "Unknown";
             duration = song.Properties.Duration.ToString(@"mm\:ss") ?? "00:00";
-            artist = song.Tag.Artists[0] ?? "Unknown";
+            artist = song.Tag.Performers[0] ?? "Unknown";
             album = song.Tag.Album ?? "Unknown";
             gender = song.Tag.FirstGenre ?? "Unknown";
             year = (int)song.Tag.Year;
