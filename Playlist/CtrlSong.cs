@@ -1,6 +1,4 @@
-﻿using NAudio;
-using NAudio.Wave;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -89,7 +87,8 @@ namespace Playlist
             Song aux;
             songName = song.Tag.Title ?? "Unknown";
             duration = song.Properties.Duration.ToString(@"mm\:ss") ?? "00:00";
-            artist = song.Tag.Performers[0] ?? "Unknown";
+            artist = song.Tag.Performers.Length > 0? 
+                        song.Tag.Performers[0] : "Unknown";
             album = song.Tag.Album ?? "Unknown";
             gender = song.Tag.FirstGenre ?? "Unknown";
             year = (int)song.Tag.Year;
