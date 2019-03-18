@@ -9,24 +9,33 @@ namespace Playlist
 {
     class Scraper : WebScraper
     {
+        public static String xpath = "//div[@class='a-section aok-relative s-image-fixed-height']/img[@class='s-image']";
+        public static List<string> results = new List<string>();
+        public static String SearchString { get; set; }
+
         public override void Init()
         {
+            String url = "https://www.amazon.com.mx/s?k=" + SearchString;
             License.LicenseKey = "LicenseKey";
             this.LoggingLevel = WebScraper.LogLevel.All;
-            //this.ObeyRobotsDotTxt = false;
-            this.Request("https://www.amazon.com.mx/s?k=ready+player+one", Parse);
+            Console.WriteLine(url);
+            Console.WriteLine("starting");
+            this.Request(url, Parse);
         }
 
         public override void Parse(Response response)
         {
-            Console.WriteLine("scraping");
-            var videos = new List<string>();
-            foreach (var item in response.XPath("//div[@class='a-section aok-relative s-image-fixed-height']/img[@class='s-image']")){
-                string link = item.ChildNodes[0].Attributes["src"];
-                Console.WriteLine(link);
-                videos.Add(link);
+            Console.WriteLine("Start scraping");
+            results.Clear();
+            HtmlNode[] items = response.XPath(xpath) ?? null;
+            if (items != null) {
+                foreach (var item in items) {
+                    string link = item.ChildNodes[0].Attributes["src"];
+                    results.Add(link);
+                }
             }
-            Scrape(videos, "Videos.json");
+            Scrape(results, "results.json");
+            Console.WriteLine("scraping finish");
         }
     }
 }
